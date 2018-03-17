@@ -1,7 +1,7 @@
 class Game {
 
   constructor () {
-    this.board = new Board(40, 40)
+    this.board = new Board(20, 20, 20)
     window.addEventListener('resize', this.resize)
     this.resize()
     this.draw = this.draw.bind(this)
@@ -26,13 +26,29 @@ class Game {
 
 class Board {
 
-  constructor (sizeX, sizeY) {
+  constructor (sizeX, sizeY, tileWidth) {
     this.sizeX = sizeX
     this.sizeY = sizeY
+    this.tileWidth = tileWidth
+    this.board = []
+    for (let x = 0; x < sizeX; x++) {
+      let column = []
+      for (let y = 0; y < sizeY; y++) {
+        column.push(0)
+      }
+      this.board.push(column)
+    }
   }
 
   draw () {
-    
+    ctx.strokeStyle = '#555'
+
+    for (let x = 0; x < this.sizeX; x++) {
+      for (let y = 0; y < this.sizeY; y++) {
+        ctx.beginPath()
+        ctx.strokeRect(x * this.tileWidth, y * this.tileWidth, this.tileWidth, this.tileWidth)
+      }
+    }
   }
 
 }
