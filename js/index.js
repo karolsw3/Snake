@@ -53,14 +53,6 @@ class Board {
     this.sizeX = sizeX
     this.sizeY = sizeY
     this.tileWidth = tileWidth
-    this.board = []
-    for (let x = 0; x < sizeX; x++) {
-      let column = []
-      for (let y = 0; y < sizeY; y++) {
-        column.push(0)
-      }
-      this.board.push(column)
-    }
   }
 
   draw () {
