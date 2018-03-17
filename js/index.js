@@ -1,12 +1,12 @@
 class Game {
-
   constructor () {
+    this.onKeyDown = this.onKeyDown.bind(this)
+    this.draw = this.draw.bind(this)
     this.board = new Board(20, 20, 20)
     window.addEventListener('resize', this.resize)
-    this.onKeyDown = this.onKeyDown.bind(this)
     window.addEventListener('keydown', this.onKeyDown)
     this.resize()
-    this.draw()
+    this.startInterval()
   }
 
   resize () {
@@ -18,22 +18,23 @@ class Game {
     var keyCode = event.keyCode
     switch (keyCode) {
       case 68: // d
-        this.board.snake.move('right')
+        this.board.snake.actualMoveDirection = 'right'
         break
       case 83: // s
-        this.board.snake.move('down')
+        this.board.snake.actualMoveDirection = 'down'
         break
       case 65: // a
-        this.board.snake.move('left')
+        this.board.snake.actualMoveDirection = 'left'
         break
       case 87: // w
-        this.board.snake.move('up')
+        this.board.snake.actualMoveDirection = 'up'
         break
     }
     this.draw()
   }
 
   draw () {
+    this.board.snake.move()
     ctx.beginPath()
     ctx.rect(0, 0, canvas.width, canvas.height)
     ctx.fillStyle = 'black'
@@ -41,10 +42,12 @@ class Game {
     this.board.draw()
   }
 
+  startInterval () {
+    setInterval(this.draw, 200)
+  }
 }
 
 class Board {
-
   constructor (sizeX, sizeY, tileWidth) {
     this.snake = new Snake(0, 0, '#ff22ff', tileWidth)
     this.sizeX = sizeX
@@ -72,22 +75,24 @@ class Board {
 
     this.snake.draw()
   }
-
 }
 
 class Snake {
-
   constructor (posX, posY, color, tileWidth) {
     this.color = color
-    this.tiles = [{
-      x: posX,
-      y: posY
-    }]
+    this.tiles = []
+    for (let i = 0; i < 12; i++) {
+      this.tiles.push({
+        x: posX + i,
+        y: 0
+      })
+    }
     this.tileWidth = tileWidth
+    this.actualMoveDirection = 'right'
   }
 
-  move (direction) {
-    switch (direction) {
+  move () {
+    switch (this.actualMoveDirection) {
       case 'up':
         this.tiles.push({
           x: this.tiles[this.tiles.length - 1].x,
@@ -124,7 +129,6 @@ class Snake {
       ctx.fill()
     }
   }
-
 }
 
 var canvas = document.getElementById('canvas')
