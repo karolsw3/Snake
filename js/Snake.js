@@ -63,4 +63,14 @@ class Snake {
       ctx.fill()
     }
   }
+
+  checkSelfCollision () {
+    let sortedTiles = this.tiles.slice().sort()
+    for(let i = 0; i < sortedTiles.length - 1; i++) {
+      if (JSON.stringify (this.getPosition()) === JSON.stringify(sortedTiles[i])) {
+        return true
+      }
+    }
+    return false
+  }
 }
