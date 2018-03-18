@@ -8,11 +8,16 @@ class Game {
     window.addEventListener('keydown', this.onKeyDown)
     this.resize()
     this.startInterval()
+    this.paused = true
   }
 
   resize () {
     canvas.width = this.board.sizeX * this.board.tileWidth
     canvas.height = this.board.sizeY * this.board.tileWidth
+  }
+
+  togglePause () {
+    this.paused = !this.paused
   }
 
   onKeyDown (event) {
@@ -30,17 +35,38 @@ class Game {
       case 87: // w
         this.board.snake.actualMoveDirection = 'up'
         break
+      case 32: // space
+        this.togglePause()
+        break
     }
     this.draw()
   }
 
   draw () {
-    this.board.snake.move()
-    ctx.beginPath()
-    ctx.rect(0, 0, canvas.width, canvas.height)
-    ctx.fillStyle = 'black'
-    ctx.fill()
-    this.board.draw()
+    if (this.checkIfSnakeCrashed()) {
+      this.gameOver()
+    } else if (this.paused) {
+      ctx.font = '27px Arial'
+      ctx.fillStyle = 'white'
+      ctx.textAlign = 'center'
+      ctx.fillText('Press space to resume', canvas.width / 2, canvas.height / 2)
+    } else {
+      this.board.snake.move()
+      ctx.beginPath()
+      ctx.rect(0, 0, canvas.width, canvas.height)
+      ctx.fillStyle = 'black'
+      ctx.fill()
+      this.board.draw()
+    }
+  }
+
+  checkIfSnakeCrashed () {
+    return this.board.snake.crashed
+  }
+
+  gameOver () {
+    window.alert('Game over!')
+    this.board.snake = new Snake(0, 0, '#ff22ff', this.board.tileWidth)
   }
 
   startInterval () {

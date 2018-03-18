@@ -16,13 +16,13 @@ class Board {
       }
     }
     this.checkCollisions()
-    this.snake.draw()
     this.food.draw()
+    this.snake.draw()
   }
 
   checkCollisions () {
     if (this._checkSnakeWallCollision()) {
-      this.gameOver()
+      this.snake.crashed = true
     }
 
     if (this._checkSnakeFoodCollision()) {
@@ -31,13 +31,8 @@ class Board {
     }
 
     if (this.snake.checkSelfCollision()) {
-      this.gameOver()
+      this.snake.crashed = true
     }
-  }
-
-  gameOver () {
-    window.alert('Game over!')
-    this.snake = new Snake(0, 0, '#ff22ff', this.tileWidth)
   }
 
   _checkSnakeFoodCollision () {

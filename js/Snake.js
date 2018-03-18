@@ -11,6 +11,7 @@ class Snake {
     this.tileWidth = tileWidth
     this.actualMoveDirection = 'right'
     this.expand = false
+    this.crashed = false
   }
 
   getPosition () {
