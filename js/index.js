@@ -50,6 +50,7 @@ class Game {
 class Board {
   constructor (sizeX, sizeY, tileWidth) {
     this.snake = new Snake(0, 0, '#ff22ff', tileWidth)
+    this.food = new Food(sizeX, sizeY, '#ff4422', tileWidth)
     this.sizeX = sizeX
     this.sizeY = sizeY
     this.tileWidth = tileWidth
@@ -66,14 +67,47 @@ class Board {
     }
 
     this.snake.draw()
+    this.food.draw()
+    this.checkCollision()
+  }
+
+  checkCollision () {
+    if (
+      this.snake.getPosition().x === this.food.getPosition().x &&
+      this.snake.getPosition().y === this.food.getPosition().y
+    ) {
+      this.snake.expand = true
+      this.food = new Food(this.sizeX, this.sizeY, '#ff4422', this.tileWidth)
+    }
   }
 }
+class Food {
+  constructor (maxX, maxY, color, tileWidth) {
+    this.posX = Math.round(Math.random() * maxX)
+    this.posY = Math.round(Math.random() * maxY)
+    this.color = color
+    this.tileWidth = tileWidth
+  }
 
+  getPosition () {
+    return {
+      x: this.posX, 
+      y: this.posY
+    }
+  }
+
+  draw () {
+    ctx.beginPath()
+    ctx.rect(this.posX * this.tileWidth, this.posY * this.tileWidth, this.tileWidth, this.tileWidth)
+    ctx.fillStyle = this.color
+    ctx.fill()
+  }
+}
 class Snake {
   constructor (posX, posY, color, tileWidth) {
     this.color = color
     this.tiles = []
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 4; i++) {
       this.tiles.push({
         x: posX + i,
         y: 0
@@ -81,6 +115,14 @@ class Snake {
     }
     this.tileWidth = tileWidth
     this.actualMoveDirection = 'right'
+    this.expand = false
+  }
+
+  getPosition () {
+    return {
+      x: this.tiles[this.tiles.length - 1].x, 
+      y: this.tiles[this.tiles.length - 1].y
+    }
   }
 
   move () {
@@ -110,7 +152,12 @@ class Snake {
         })
         break
     }
-    this.tiles.shift()
+
+    if (this.expand) {
+      this.expand = false
+    } else {
+      this.tiles.shift()
+    }
   }
 
   draw () {
