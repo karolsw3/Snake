@@ -1,8 +1,9 @@
 class Game {
   constructor () {
+    this.resize = this.resize.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
     this.draw = this.draw.bind(this)
-    this.board = new Board(20, 20, 20)
+    this.board = new Board(20, 20, 17)
     window.addEventListener('resize', this.resize)
     window.addEventListener('keydown', this.onKeyDown)
     this.resize()
@@ -10,8 +11,8 @@ class Game {
   }
 
   resize () {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    canvas.width = this.board.sizeX * this.board.tileWidth
+    canvas.height = this.board.sizeY * this.board.tileWidth
   }
 
   onKeyDown (event) {
