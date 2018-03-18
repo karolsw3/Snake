@@ -65,33 +65,39 @@ class Board {
         ctx.strokeRect(x * this.tileWidth, y * this.tileWidth, this.tileWidth, this.tileWidth)
       }
     }
-
+    this.checkCollision()
     this.snake.draw()
     this.food.draw()
-    this.checkCollision()
   }
 
   checkCollision () {
-    if (
-      this.snake.getPosition().x === this.food.getPosition().x &&
-      this.snake.getPosition().y === this.food.getPosition().y
+    if (this.snake.getPosition().x >= this.sizeX ||
+       this.snake.getPosition().x < 0 ||
+       this.snake.getPosition().y >= this.sizeY ||
+       this.snake.getPosition().y < 0
     ) {
+      window.alert('Game over!')
+      this.snake = new Snake(0, 0, '#ff22ff', this.tileWidth)
+    }
+
+    if (JSON.stringify(this.snake.getPosition()) === JSON.stringify(this.food.getPosition()) ) {
       this.snake.expand = true
       this.food = new Food(this.sizeX, this.sizeY, '#ff4422', this.tileWidth)
     }
   }
 }
+
 class Food {
   constructor (maxX, maxY, color, tileWidth) {
-    this.posX = Math.round(Math.random() * maxX)
-    this.posY = Math.round(Math.random() * maxY)
+    this.posX = Math.round(Math.random() * (maxX - 1))
+    this.posY = Math.round(Math.random() * (maxY - 1))
     this.color = color
     this.tileWidth = tileWidth
   }
 
   getPosition () {
     return {
-      x: this.posX, 
+      x: this.posX,
       y: this.posY
     }
   }
@@ -103,6 +109,7 @@ class Food {
     ctx.fill()
   }
 }
+
 class Snake {
   constructor (posX, posY, color, tileWidth) {
     this.color = color
@@ -120,7 +127,7 @@ class Snake {
 
   getPosition () {
     return {
-      x: this.tiles[this.tiles.length - 1].x, 
+      x: this.tiles[this.tiles.length - 1].x,
       y: this.tiles[this.tiles.length - 1].y
     }
   }
