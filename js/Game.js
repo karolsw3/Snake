@@ -1,7 +1,6 @@
 import { Board } from './Board.js'
 
 export class Game {
-
   constructor () {
     this.canvas = document.getElementById('canvas')
     this.ctx = this.canvas.getContext('2d')
@@ -9,6 +8,7 @@ export class Game {
     this.onKeyDown = this.onKeyDown.bind(this)
     this.animationFrame = this.animationFrame.bind(this)
     this.board = new Board(30, 30, 16)
+    this.highScore = 0
     this.score = 0
     this.paused = true
     this.started = false
@@ -18,7 +18,7 @@ export class Game {
     window.addEventListener('keydown', this.onKeyDown)
     window.addEventListener('resize', this.resize)
     this.resize()
-    this.showInfo('Press space to start')
+    this.showInfo('Press space to start', 0)
   }
 
   resize () {
@@ -29,7 +29,7 @@ export class Game {
   togglePause () {
     this.paused = !this.paused
     if (this.paused) {
-      this.showInfo('Press space to resume')
+      this.showInfo('Press space to resume', 0)
     }
   }
 
@@ -63,10 +63,13 @@ export class Game {
     if (this.checkIfSnakeCrashed()) {
       this.gameOver()
     } else if (this.paused) {
-      
+
     } else {
       if (this.board.checkSnakeFoodCollision()) {
         this.score += 6
+        if ( this.score > this.highScore) {
+          this.highScore += 6
+        }
         this.board.food.changePosition()
         this.board.snake.expand = true
       }
@@ -92,17 +95,15 @@ export class Game {
       this.ctx.fillStyle = this.board.snake.color
       this.ctx.fill()
     }
+
+    this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 4)
   }
 
-  showInfo (text) {
-    this.ctx.beginPath()
-    this.ctx.rect(0, 0, this.canvas.width, this.canvas.height)
-    this.ctx.fillStyle = 'black'
-    this.ctx.fill()
+  showInfo (text, position) {
     this.ctx.font = '27px Arial'
     this.ctx.fillStyle = 'white'
     this.ctx.textAlign = 'center'
-    this.ctx.fillText(text, this.canvas.width / 2, this.canvas.height / 2)
+    this.ctx.fillText(text, this.canvas.width / 2, this.canvas.height / 2 + position * 50)
   }
 
   checkIfSnakeCrashed () {
@@ -110,7 +111,7 @@ export class Game {
   }
 
   gameOver () {
-    this.showInfo('Game over! Score: ' + this.score)
+    this.showInfo('Game over! Score: ' + this.score, 0)
     this.reset()
   }
 

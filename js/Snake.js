@@ -1,5 +1,4 @@
 export class Snake {
-
   constructor (posX, posY, color) {
     this.color = color
     this.tiles = []
