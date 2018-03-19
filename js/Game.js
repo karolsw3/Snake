@@ -1,23 +1,32 @@
-class Game {
+import { Board } from './Board.js'
+
+export class Game {
   constructor () {
+    this.canvas = document.getElementById('canvas')
+    this.ctx = this.canvas.getContext('2d')
     this.resize = this.resize.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
-    this.draw = this.draw.bind(this)
-    this.board = new Board(20, 20, 17)
-    window.addEventListener('resize', this.resize)
+    this.animationFrame = this.animationFrame.bind(this)
+    this.board = new Board(30, 30, 16)
     window.addEventListener('keydown', this.onKeyDown)
+    window.addEventListener('resize', this.resize)
     this.resize()
-    this.startInterval()
+    this.score = 0
     this.paused = true
+    this.started = false
+    this.showInfo('Press space to start')
   }
 
   resize () {
-    canvas.width = this.board.sizeX * this.board.tileWidth
-    canvas.height = this.board.sizeY * this.board.tileWidth
+    this.canvas.width = this.board.sizeX * this.board.tileWidth
+    this.canvas.height = this.board.sizeY * this.board.tileWidth
   }
 
   togglePause () {
     this.paused = !this.paused
+    if (this.paused) {
+      this.showInfo('Press space to resume')
+    }
   }
 
   onKeyDown (event) {
@@ -36,40 +45,79 @@ class Game {
         this.board.snake.actualMoveDirection = 'up'
         break
       case 32: // space
+        if (!this.started) {
+          this.started = true
+          this.startInterval()
+        }
         this.togglePause()
         break
     }
-    this.draw()
+    this.animationFrame()
   }
 
-  draw () {
+  animationFrame () {
     if (this.checkIfSnakeCrashed()) {
       this.gameOver()
     } else if (this.paused) {
-      ctx.font = '27px Arial'
-      ctx.fillStyle = 'white'
-      ctx.textAlign = 'center'
-      ctx.fillText('Press space to resume', canvas.width / 2, canvas.height / 2)
+      
     } else {
-      this.board.snake.move()
-      ctx.beginPath()
-      ctx.rect(0, 0, canvas.width, canvas.height)
-      ctx.fillStyle = 'black'
-      ctx.fill()
-      this.board.draw()
+      if (this.board.checkSnakeFoodCollision()) {
+        this.score += 6
+        this.board.food.changePosition()
+        this.board.snake.expand = true
+      }
+      this.draw()
     }
   }
 
+  draw () {
+    this.board.snake.move()
+    this.ctx.beginPath()
+    this.ctx.rect(0, 0, this.canvas.width, this.canvas.height)
+    this.ctx.fillStyle = 'black'
+    this.ctx.fill()
+
+    this.ctx.beginPath()
+    this.ctx.rect(this.board.food.posX * this.board.tileWidth, this.board.food.posY * this.board.tileWidth, this.board.tileWidth, this.board.tileWidth)
+    this.ctx.fillStyle = this.board.food.color
+    this.ctx.fill()
+
+    for (let i = 0; i < this.board.snake.tiles.length; i++) {
+      this.ctx.beginPath()
+      this.ctx.rect(this.board.snake.tiles[i].x * this.board.tileWidth, this.board.snake.tiles[i].y * this.board.tileWidth, this.board.tileWidth, this.board.tileWidth)
+      this.ctx.fillStyle = this.board.snake.color
+      this.ctx.fill()
+    }
+  }
+
+  showInfo (text) {
+    this.ctx.beginPath()
+    this.ctx.rect(0, 0, this.canvas.width, this.canvas.height)
+    this.ctx.fillStyle = 'black'
+    this.ctx.fill()
+    this.ctx.font = '27px Arial'
+    this.ctx.fillStyle = 'white'
+    this.ctx.textAlign = 'center'
+    this.ctx.fillText(text, this.canvas.width / 2, this.canvas.height / 2)
+  }
+
   checkIfSnakeCrashed () {
-    return this.board.snake.crashed
+    return (this.board.snake.checkSelfCollision() || this.board.checkSnakeWallCollision())
   }
 
   gameOver () {
-    window.alert('Game over!')
-    this.board.snake = new Snake(0, 0, '#ff22ff', this.board.tileWidth)
+    this.showInfo('Game over! Score: ' + this.score)
+    this.reset()
+  }
+
+  reset () {
+    this.score = 0
+    this.board.snake.setTail(0, 0)
+    this.board.snake.actualMoveDirection = 'right'
+    this.paused = true
   }
 
   startInterval () {
-    setInterval(this.draw, 200)
+    setInterval(this.animationFrame, 50)
   }
 }

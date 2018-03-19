@@ -1,17 +1,21 @@
-class Snake {
-  constructor (posX, posY, color, tileWidth) {
+export class Snake {
+
+  constructor (posX, posY, color) {
     this.color = color
+    this.tiles = []
+    this.setTail(posX, posY)
+    this.actualMoveDirection = 'right'
+    this.expand = false
+  }
+
+  setTail (posX, posY) {
     this.tiles = []
     for (let i = 0; i < 4; i++) {
       this.tiles.push({
         x: posX + i,
-        y: 0
+        y: posY
       })
     }
-    this.tileWidth = tileWidth
-    this.actualMoveDirection = 'right'
-    this.expand = false
-    this.crashed = false
   }
 
   getPosition () {
@@ -56,19 +60,10 @@ class Snake {
     }
   }
 
-  draw () {
-    for (let i = 0; i < this.tiles.length; i++) {
-      ctx.beginPath()
-      ctx.rect(this.tiles[i].x * this.tileWidth, this.tiles[i].y * this.tileWidth, this.tileWidth, this.tileWidth)
-      ctx.fillStyle = this.color
-      ctx.fill()
-    }
-  }
-
   checkSelfCollision () {
     let sortedTiles = this.tiles.slice().sort()
-    for(let i = 0; i < sortedTiles.length - 1; i++) {
-      if (JSON.stringify (this.getPosition()) === JSON.stringify(sortedTiles[i])) {
+    for (let i = 0; i < sortedTiles.length - 1; i++) {
+      if (JSON.stringify(this.getPosition()) === JSON.stringify(sortedTiles[i])) {
         return true
       }
     }

@@ -1,3 +1,3 @@
-var canvas = document.getElementById('canvas')
-var ctx = canvas.getContext('2d')
+import { Game } from './Game.js'
+
 var game = new Game()

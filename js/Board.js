@@ -1,45 +1,20 @@
-class Board {
+import { Snake } from './Snake.js'
+import { Food } from './Food.js'
+
+export class Board {
   constructor (sizeX, sizeY, tileWidth) {
-    this.snake = new Snake(0, 0, '#ff22ff', tileWidth)
-    this.food = new Food(sizeX, sizeY, '#ff4422', tileWidth)
+    this.snake = new Snake(0, 0, '#ff22ff')
+    this.food = new Food(sizeX, sizeY, '#ff4422')
     this.sizeX = sizeX
     this.sizeY = sizeY
     this.tileWidth = tileWidth
   }
 
-  draw () {
-    ctx.strokeStyle = '#555'
-    for (let x = 0; x < this.sizeX; x++) {
-      for (let y = 0; y < this.sizeY; y++) {
-        ctx.beginPath()
-        ctx.strokeRect(x * this.tileWidth, y * this.tileWidth, this.tileWidth, this.tileWidth)
-      }
-    }
-    this.checkCollisions()
-    this.food.draw()
-    this.snake.draw()
-  }
-
-  checkCollisions () {
-    if (this._checkSnakeWallCollision()) {
-      this.snake.crashed = true
-    }
-
-    if (this._checkSnakeFoodCollision()) {
-      this.snake.expand = true
-      this.food = new Food(this.sizeX, this.sizeY, '#ff4422', this.tileWidth)
-    }
-
-    if (this.snake.checkSelfCollision()) {
-      this.snake.crashed = true
-    }
-  }
-
-  _checkSnakeFoodCollision () {
+  checkSnakeFoodCollision () {
     return (JSON.stringify(this.snake.getPosition()) === JSON.stringify(this.food.getPosition()))
   }
 
-  _checkSnakeWallCollision () {
+  checkSnakeWallCollision () {
     return (
       this.snake.getPosition().x >= this.sizeX ||
       this.snake.getPosition().x < 0 ||

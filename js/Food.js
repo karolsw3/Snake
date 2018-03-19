@@ -1,9 +1,16 @@
-class Food {
-  constructor (maxX, maxY, color, tileWidth) {
-    this.posX = Math.round(Math.random() * (maxX - 1))
-    this.posY = Math.round(Math.random() * (maxY - 1))
+export class Food {
+  constructor (maxX, maxY, color) {
+    this.maxX = maxX
+    this.maxY = maxY
+    this.posX = 0
+    this.posY = 0
     this.color = color
-    this.tileWidth = tileWidth
+    this.changePosition()
+  }
+
+  changePosition () {
+    this.posX = Math.round(Math.random() * (this.maxX - 1))
+    this.posY = Math.round(Math.random() * (this.maxY - 1))
   }
 
   getPosition () {
@@ -11,12 +18,5 @@ class Food {
       x: this.posX,
       y: this.posY
     }
-  }
-
-  draw () {
-    ctx.beginPath()
-    ctx.rect(this.posX * this.tileWidth, this.posY * this.tileWidth, this.tileWidth, this.tileWidth)
-    ctx.fillStyle = this.color
-    ctx.fill()
   }
 }
