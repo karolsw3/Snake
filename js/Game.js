@@ -7,20 +7,22 @@ export class Game {
     this.resize = this.resize.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
     this.animationFrame = this.animationFrame.bind(this)
-    this.board = new Board(30, 30, 16)
+    this.board = new Board(26, 26, 16)
     this.highScore = 0
     this.score = 0
     this.paused = true
     this.started = false
   }
 
+  // Game initialisation
   init () {
     window.addEventListener('keydown', this.onKeyDown)
     window.addEventListener('resize', this.resize)
     this.resize()
-    this.showInfo('Press space to start', 0)
+    this.showInfo('Press space to start', 0, 25)
   }
 
+  // Keep the canvas size constant
   resize () {
     this.canvas.width = this.board.sizeX * this.board.tileWidth
     this.canvas.height = this.board.sizeY * this.board.tileWidth
@@ -29,7 +31,7 @@ export class Game {
   togglePause () {
     this.paused = !this.paused
     if (this.paused) {
-      this.showInfo('Press space to resume', 0)
+      this.showInfo('Press space to resume', 0, 25)
     }
   }
 
@@ -59,16 +61,17 @@ export class Game {
     this.animationFrame()
   }
 
+  // Check if any of the conditions have been met which should interrupt game, if no - continue drawing canvas
   animationFrame () {
     if (this.checkIfSnakeCrashed()) {
       this.gameOver()
-    } else if (this.paused) {
+    }
 
-    } else {
+    if (!this.paused) {
       if (this.board.checkSnakeFoodCollision()) {
-        this.score += 6
+        this.score += 2
         if ( this.score > this.highScore) {
-          this.highScore += 6
+          this.highScore += 2
         }
         this.board.food.changePosition()
         this.board.snake.expand = true
@@ -77,6 +80,7 @@ export class Game {
     }
   }
 
+  // Draw all objects in the game
   draw () {
     this.board.snake.move()
     this.ctx.beginPath()
@@ -96,11 +100,12 @@ export class Game {
       this.ctx.fill()
     }
 
-    this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 4)
+    this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 4, 16)
   }
 
-  showInfo (text, position) {
-    this.ctx.font = '27px Arial'
+  // Show a text information on the screen
+  showInfo (text, position, size) {
+    this.ctx.font = size + 'px Arial'
     this.ctx.fillStyle = 'white'
     this.ctx.textAlign = 'center'
     this.ctx.fillText(text, this.canvas.width / 2, this.canvas.height / 2 + position * 50)
@@ -111,7 +116,7 @@ export class Game {
   }
 
   gameOver () {
-    this.showInfo('Game over! Score: ' + this.score, 0)
+    this.showInfo('Game over! Score: ' + this.score, 0, 25)
     this.reset()
   }
 

@@ -7,6 +7,7 @@ export class Snake {
     this.expand = false
   }
 
+  // Make a new tail and set its position
   setTail (posX, posY) {
     this.tiles = []
     for (let i = 0; i < 4; i++) {
