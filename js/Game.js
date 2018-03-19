@@ -1,6 +1,7 @@
 import { Board } from './Board.js'
 
 export class Game {
+
   constructor () {
     this.canvas = document.getElementById('canvas')
     this.ctx = this.canvas.getContext('2d')
@@ -8,12 +9,15 @@ export class Game {
     this.onKeyDown = this.onKeyDown.bind(this)
     this.animationFrame = this.animationFrame.bind(this)
     this.board = new Board(30, 30, 16)
-    window.addEventListener('keydown', this.onKeyDown)
-    window.addEventListener('resize', this.resize)
-    this.resize()
     this.score = 0
     this.paused = true
     this.started = false
+  }
+
+  init () {
+    window.addEventListener('keydown', this.onKeyDown)
+    window.addEventListener('resize', this.resize)
+    this.resize()
     this.showInfo('Press space to start')
   }
 
