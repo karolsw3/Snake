@@ -81,19 +81,25 @@ export class Game {
     this.ctx.rect(0, 0, this.canvas.width, this.canvas.height)
     this.ctx.fillStyle = 'black'
     this.ctx.fill()
+    this.drawFood()
+    this.drawSnake()
+    this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 3, 16)
+  }
 
+  drawFood () {
     this.ctx.beginPath()
     this.ctx.rect(this.board.food.posX * this.board.tileWidth, this.board.food.posY * this.board.tileWidth, this.board.tileWidth, this.board.tileWidth)
     this.ctx.fillStyle = this.board.food.color
     this.ctx.fill()
+  }
 
+  drawSnake () {
     for (let i = 0; i < this.board.snake.tiles.length; i++) {
       this.ctx.beginPath()
       this.ctx.rect(this.board.snake.tiles[i].x * this.board.tileWidth, this.board.snake.tiles[i].y * this.board.tileWidth, this.board.tileWidth, this.board.tileWidth)
       this.ctx.fillStyle = this.board.snake.color
       this.ctx.fill()
-    } 
-    this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 3, 16)
+    }
   }
 
   // Show a text information on the screen
