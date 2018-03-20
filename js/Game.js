@@ -39,16 +39,16 @@ export class Game {
     var keyCode = event.keyCode
     switch (keyCode) {
       case 68: // d
-        this.board.snake.actualMoveDirection = 'right'
+        if (this.board.snake.actualMoveDirection !== 'left') this.board.snake.actualMoveDirection = 'right'
         break
       case 83: // s
-        this.board.snake.actualMoveDirection = 'down'
+        if (this.board.snake.actualMoveDirection !== 'up') this.board.snake.actualMoveDirection = 'down'
         break
       case 65: // a
-        this.board.snake.actualMoveDirection = 'left'
+        if (this.board.snake.actualMoveDirection !== 'right') this.board.snake.actualMoveDirection = 'left'
         break
       case 87: // w
-        this.board.snake.actualMoveDirection = 'up'
+        if (this.board.snake.actualMoveDirection !== 'down') this.board.snake.actualMoveDirection = 'up'
         break
       case 32: // space
         if (!this.started) {
