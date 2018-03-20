@@ -37,26 +37,20 @@ export class Game {
 
   onKeyDown (event) {
     var keyCode = event.keyCode
-    switch (keyCode) {
-      case 68: // d
-        if (this.board.snake.actualMoveDirection !== 'left') this.board.snake.actualMoveDirection = 'right'
-        break
-      case 83: // s
-        if (this.board.snake.actualMoveDirection !== 'up') this.board.snake.actualMoveDirection = 'down'
-        break
-      case 65: // a
-        if (this.board.snake.actualMoveDirection !== 'right') this.board.snake.actualMoveDirection = 'left'
-        break
-      case 87: // w
-        if (this.board.snake.actualMoveDirection !== 'down') this.board.snake.actualMoveDirection = 'up'
-        break
-      case 32: // space
-        if (!this.started) {
-          this.started = true
-          this.startInterval()
-        }
-        this.togglePause()
-        break
+    if (keyCode === 68 && this.board.snake.actualMoveDirection !== 'left') { // d
+      this.board.snake.actualMoveDirection = 'right'
+    } else if (keyCode === 83 && this.board.snake.actualMoveDirection !== 'up') { // s
+      this.board.snake.actualMoveDirection = 'down'
+    } else if (keyCode === 65 && this.board.snake.actualMoveDirection !== 'right') { // a
+      this.board.snake.actualMoveDirection = 'left'
+    } else if (keyCode === 87 && this.board.snake.actualMoveDirection !== 'down') { // w
+      this.board.snake.actualMoveDirection = 'up'
+    } else if (keyCode === 32) { // space
+      if (!this.started) {
+        this.started = true
+        this.startInterval()
+      }
+      this.togglePause()
     }
     this.animationFrame()
   }
@@ -70,7 +64,7 @@ export class Game {
     if (!this.paused) {
       if (this.board.checkSnakeFoodCollision()) {
         this.score += 2
-        if ( this.score > this.highScore) {
+        if (this.score > this.highScore) {
           this.highScore += 2
         }
         this.board.food.changePosition()
