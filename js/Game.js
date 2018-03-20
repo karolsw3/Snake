@@ -7,7 +7,7 @@ export class Game {
     this.resize = this.resize.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
     this.animationFrame = this.animationFrame.bind(this)
-    this.board = new Board(26, 26, 16)
+    this.board = new Board(23, 23, 16)
     this.highScore = 0
     this.score = 0
     this.paused = true
@@ -19,7 +19,7 @@ export class Game {
     window.addEventListener('keydown', this.onKeyDown)
     window.addEventListener('resize', this.resize)
     this.resize()
-    this.showInfo('Press space to start', 0, 25)
+    this.showInfo('Press space to start', 0, 20)
   }
 
   // Keep the canvas size constant
@@ -31,7 +31,7 @@ export class Game {
   togglePause () {
     this.paused = !this.paused
     if (this.paused) {
-      this.showInfo('Press space to resume', 0, 25)
+      this.showInfo('Press space to resume', 0, 20)
     }
   }
 
@@ -92,9 +92,8 @@ export class Game {
       this.ctx.rect(this.board.snake.tiles[i].x * this.board.tileWidth, this.board.snake.tiles[i].y * this.board.tileWidth, this.board.tileWidth, this.board.tileWidth)
       this.ctx.fillStyle = this.board.snake.color
       this.ctx.fill()
-    }
-
-    this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 4, 16)
+    } 
+    this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 3, 16)
   }
 
   // Show a text information on the screen
@@ -116,7 +115,7 @@ export class Game {
 
   reset () {
     this.score = 0
-    this.board.snake.setTail(0, 0)
+    this.board.snake.setTail(0, Math.floor(this.board.sizeY / 2))
     this.board.snake.actualMoveDirection = 'right'
     this.paused = true
   }
