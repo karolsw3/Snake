@@ -3,8 +3,8 @@ import { Food } from './Food.js'
 
 export class Board {
   constructor (sizeX, sizeY, tileWidth) {
-    this.snake = new Snake(0, Math.round(sizeY / 2), '#ff22ff')
-    this.food = new Food(sizeX, sizeY, '#ff4422')
+    this.snake = new Snake(0, Math.round(sizeY / 2), '#83bcff')
+    this.food = new Food(sizeX, sizeY, '#ffbc42')
     this.sizeX = sizeX
     this.sizeY = sizeY
     this.tileWidth = tileWidth

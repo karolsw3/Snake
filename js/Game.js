@@ -7,7 +7,7 @@ export class Game {
     this.resize = this.resize.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
     this.animationFrame = this.animationFrame.bind(this)
-    this.board = new Board(23, 23, 16)
+    this.board = new Board(23, 23, 23)
     this.highScore = 0
     this.score = 0
     this.paused = true
@@ -31,7 +31,7 @@ export class Game {
   togglePause () {
     this.paused = !this.paused
     if (this.paused) {
-      this.showInfo('Press space to resume', 0, 20)
+      this.showInfo('🚩 Press space to resume 🚩', 0, 20)
     }
   }
 
@@ -79,11 +79,11 @@ export class Game {
     this.board.snake.move()
     this.ctx.beginPath()
     this.ctx.rect(0, 0, this.canvas.width, this.canvas.height)
-    this.ctx.fillStyle = 'black'
+    this.ctx.fillStyle = '#e1eff6'
     this.ctx.fill()
     this.drawFood()
     this.drawSnake()
-    this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 3, 16)
+    this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 5, 18)
   }
 
   drawFood () {
@@ -94,10 +94,10 @@ export class Game {
   }
 
   drawSnake () {
+    this.ctx.fillStyle = this.board.snake.color
     for (let i = 0; i < this.board.snake.tiles.length; i++) {
       this.ctx.beginPath()
       this.ctx.rect(this.board.snake.tiles[i].x * this.board.tileWidth, this.board.snake.tiles[i].y * this.board.tileWidth, this.board.tileWidth, this.board.tileWidth)
-      this.ctx.fillStyle = this.board.snake.color
       this.ctx.fill()
     }
   }
@@ -105,9 +105,9 @@ export class Game {
   // Show a text information on the screen
   showInfo (text, position, size) {
     this.ctx.font = size + 'px Arial'
-    this.ctx.fillStyle = 'white'
+    this.ctx.fillStyle = '#222'
     this.ctx.textAlign = 'center'
-    this.ctx.fillText(text, this.canvas.width / 2, this.canvas.height / 2 + position * 50)
+    this.ctx.fillText(text, this.canvas.width / 2 , this.canvas.height / 2 + position * 50)
   }
 
   checkIfSnakeCrashed () {
@@ -115,7 +115,7 @@ export class Game {
   }
 
   gameOver () {
-    this.showInfo('Game over! Score: ' + this.score, 0, 25)
+    this.showInfo('Game over! Score: ' + this.score, 0, 20)
     this.reset()
   }
 
