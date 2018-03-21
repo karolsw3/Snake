@@ -16,8 +16,8 @@ canvas{
 .snakeBox{
   display: inline-block;
   margin: 100px auto;
-  padding: 10px;
+  padding: 6px;
   box-sizing: border-box;
   background: #83bcff;
-  border-radius: 15px;
+  border-radius: 11px;
 }
