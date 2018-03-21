@@ -100,7 +100,8 @@ export class Game {
 
   drawSnake () {
     this.ctx.fillStyle = this.board.snake.color
-    for (let tile in this.snake.tiles) {
+    for (let i = 0; i < this.board.snake.tiles.length; i++) {
+      var tile = this.board.snake.tiles[i]
       this.ctx.beginPath()
       this.ctx.rect(tile.x * this.board.tileWidth, tile.y * this.board.tileWidth, this.board.tileWidth, this.board.tileWidth)
       this.ctx.fill()
