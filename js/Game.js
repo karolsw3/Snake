@@ -137,6 +137,6 @@ export class Game {
   }
 
   startInterval () {
-    setInterval(this.animationFrame, 50)
+    setInterval(this.animationFrame, 85)
   }
 }
