@@ -18,7 +18,7 @@ export class Game {
     this.started = false
   }
 
-  // Game initialisation
+  // Initialises the game
   init () {
     window.addEventListener('keydown', this.onKeyDown)
     window.addEventListener('resize', this.resize)
@@ -26,7 +26,7 @@ export class Game {
     this.showInfo('Press space to start', 'main')
   }
 
-  // Keep the canvas size constant
+  // Resizes canvas to standard width and height
   resize () {
     this.canvas.width = this.board.sizeX * this.board.tileWidth
     this.canvas.height = this.board.sizeY * this.board.tileWidth
@@ -61,7 +61,6 @@ export class Game {
     this.animationFrame()
   }
 
-  // Check if any of the conditions have been met which should interrupt game, if no - continue drawing canvas
   animationFrame () {
     if (this.checkIfSnakeCrashed()) {
       this.gameOver()
@@ -81,7 +80,7 @@ export class Game {
     }
   }
 
-  // Draw all objects in the game
+  // Draw all objects in the game canvas
   draw () {
     this.board.snake.move()
     this.ctx.beginPath()
@@ -101,9 +100,9 @@ export class Game {
 
   drawSnake () {
     this.ctx.fillStyle = this.board.snake.color
-    for (let i = 0; i < this.board.snake.tiles.length; i++) {
+    for (let tile in this.snake.tiles) {
       this.ctx.beginPath()
-      this.ctx.rect(this.board.snake.tiles[i].x * this.board.tileWidth, this.board.snake.tiles[i].y * this.board.tileWidth, this.board.tileWidth, this.board.tileWidth)
+      this.ctx.rect(tile.x * this.board.tileWidth, tile.y * this.board.tileWidth, this.board.tileWidth, this.board.tileWidth)
       this.ctx.fill()
     }
   }

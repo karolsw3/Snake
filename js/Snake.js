@@ -51,6 +51,8 @@ export class Snake {
           y: this.tiles[this.tiles.length - 1].y
         })
         break
+      default:
+        throw new Error('Wrong direction: "' + this.actualMoveDirection + '"')
     }
 
     if (this.expand) {
