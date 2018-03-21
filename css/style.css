@@ -13,11 +13,38 @@ canvas{
   margin: 0 auto;
 }
 
+.gameInfo{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  font-family: 'Arial';
+  color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;      
+}
+
+.gameInfo__main{
+  position: absolute;
+  font-size: 23px;
+}
+
+.gameInfo__score{
+  position: absolute;
+  bottom: 20px;
+  font-size: 14px;
+}
+
 .snakeBox{
-  display: inline-block;
+  display: flex;
   margin: 100px auto;
   padding: 6px;
   box-sizing: border-box;
   background: #83bcff;
   border-radius: 11px;
+  position: relative;
 }

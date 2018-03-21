@@ -7,6 +7,10 @@ export class Game {
     this.resize = this.resize.bind(this)
     this.onKeyDown = this.onKeyDown.bind(this)
     this.animationFrame = this.animationFrame.bind(this)
+    this.info = {
+      main: document.getElementById('gameInfo__main'),
+      score: document.getElementById('gameInfo__score')
+    }
     this.board = new Board(23, 23, 23)
     this.highScore = 0
     this.score = 0
@@ -19,7 +23,7 @@ export class Game {
     window.addEventListener('keydown', this.onKeyDown)
     window.addEventListener('resize', this.resize)
     this.resize()
-    this.showInfo('Press space to start', 0, 20)
+    this.showInfo('Press space to start', 'main')
   }
 
   // Keep the canvas size constant
@@ -31,7 +35,9 @@ export class Game {
   togglePause () {
     this.paused = !this.paused
     if (this.paused) {
-      this.showInfo('🚩 Press space to resume 🚩', 0, 20)
+      this.showInfo('🚩 Press space to resume 🚩', 'main')
+    } else {
+      this.showInfo('', 'main')
     }
   }
 
@@ -69,6 +75,7 @@ export class Game {
         }
         this.board.food.changePosition()
         this.board.snake.expand = true
+        this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 'score')
       }
       this.draw()
     }
@@ -83,7 +90,6 @@ export class Game {
     this.ctx.fill()
     this.drawFood()
     this.drawSnake()
-    this.showInfo('Score: ' + this.score + '  Highscore: ' + this.highScore, 5, 18)
   }
 
   drawFood () {
@@ -103,11 +109,15 @@ export class Game {
   }
 
   // Show a text information on the screen
-  showInfo (text, position, size) {
-    this.ctx.font = size + 'px Arial'
-    this.ctx.fillStyle = '#222'
-    this.ctx.textAlign = 'center'
-    this.ctx.fillText(text, this.canvas.width / 2 , this.canvas.height / 2 + position * 50)
+  showInfo (text, position) {
+    switch (position) {
+      case 'main':
+        this.info.main.innerHTML = text
+        break
+      case 'score':
+        this.info.score.innerHTML = text
+        break
+    }
   }
 
   checkIfSnakeCrashed () {
@@ -115,7 +125,7 @@ export class Game {
   }
 
   gameOver () {
-    this.showInfo('Game over! Score: ' + this.score, 0, 20)
+    this.showInfo('Game over! Score: ' + this.score, 'main')
     this.reset()
   }
 
