@@ -43,13 +43,13 @@ export class Game {
 
   onKeyDown (event) {
     var keyCode = event.keyCode
-    if (keyCode === 68 && this.board.snake.actualMoveDirection !== 'left') { // d
+    if ((keyCode === 68 || keyCode === 39) && this.board.snake.actualMoveDirection !== 'left') { // d
       this.board.snake.actualMoveDirection = 'right'
-    } else if (keyCode === 83 && this.board.snake.actualMoveDirection !== 'up') { // s
+    } else if ((keyCode === 83 || keyCode === 40) && this.board.snake.actualMoveDirection !== 'up') { // s
       this.board.snake.actualMoveDirection = 'down'
-    } else if (keyCode === 65 && this.board.snake.actualMoveDirection !== 'right') { // a
+    } else if ((keyCode === 65 || keyCode === 37) && this.board.snake.actualMoveDirection !== 'right') { // a
       this.board.snake.actualMoveDirection = 'left'
-    } else if (keyCode === 87 && this.board.snake.actualMoveDirection !== 'down') { // w
+    } else if ((keyCode === 87 || keyCode === 38) && this.board.snake.actualMoveDirection !== 'down') { // w
       this.board.snake.actualMoveDirection = 'up'
     } else if (keyCode === 32) { // space
       if (!this.started) {
